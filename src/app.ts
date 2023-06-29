@@ -1,4 +1,4 @@
-import { Dashboard } from "dattatable";
+import { Dashboard, ItemForm } from "dattatable";
 import { Components } from "gd-sprest-bs";
 import * as jQuery from "jquery";
 import { DataSource, IItem } from "./ds";
@@ -15,8 +15,11 @@ export class App {
     constructor(el: HTMLElement) {
         // Render the dashboard
         this.render(el);
+        // Set the list for Item Form
+        ItemForm.ListName = Strings.Lists.Main;
     }
 
+    
     // Renders the dashboard
     private render(el: HTMLElement) {
         // Create the dashboard
@@ -30,8 +33,20 @@ export class App {
                     {
                         className: "btn-outline-light",
                         text: "Create Item",
-                        isButton: true
-                        // onClick here
+                        isButton: true,
+                        onClick: () => {
+                            // Create an item
+                            ItemForm.create({
+
+                                // Custom Header
+                                onSetHeader: (el) => {
+                                    el.innerText = "Create New Event"
+                                },
+                                onUpdate: () => {
+                                    
+                                }
+                            });
+                        }
                     }
                 ]
             },
@@ -220,6 +235,15 @@ export class App {
                 //     }
                 // ]
             }
+        });
+    }
+
+    // Refreshes the dashboard
+    private refresh() {
+        // Refresh the data
+        DataSource.load().then(items => {
+            // Update the dashboard and timeline
+            //
         });
     }
 }

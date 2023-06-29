@@ -13,11 +13,17 @@ export interface IItem extends Types.SP.ListItem {
     Modified: string;
 }
 
+// Item
+export interface FItem extends Types.SP.FileOData {
+    ListItemAllFields: Types.SP.ListItem & Types.SP.ListItemCollections & Types.SP.ListItemCollectionMethods & {
+    }
+}
 
 /**
  * Data Source
  */
 export class DataSource {
+
 
     // Initializes the application
     static init(): PromiseLike<void> {
@@ -221,6 +227,17 @@ export class DataSource {
             }, reject);
         });
     }
+
+
+        // Refreshes the list data
+        static refresh(): PromiseLike<IItem[]> {
+            // Return a promise
+            return new Promise((resolve, reject) => {
+                // Refresh the data
+                DataSource.List.refresh().then(resolve, reject);
+            });
+        }
+
 
 
 }
