@@ -78,7 +78,9 @@ export class DataSource {
                 listName: Strings.Lists.Main,
                 itemQuery: {
                     GetAllItems: true,
+                    Expand: ["AssignedTo", "Requester"],
                     OrderBy: ["Title"],
+                    Select: ["*", "AssignedTo/Id", "AssignedTo/Title", "Requester/Id", "Requester/Title"],
                     Top: 5000
                 },
                 onInitError: reject,
