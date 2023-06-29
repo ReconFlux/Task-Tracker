@@ -13,6 +13,20 @@ export const Configuration = Helper.SPConfig({
             },
             CustomFields: [
                 {
+                    name: "AssignedTo",
+                    title: "Assigned To",
+                    type: Helper.SPCfgFieldType.User,
+                    required: true,
+                    selectionMode: SPTypes.FieldUserSelectionType.PeopleOnly,
+                } as Helper.IFieldInfoUser,
+                {
+                    name: "Requester",
+                    title: "Requester",
+                    type: Helper.SPCfgFieldType.User,
+                    required: true,
+                    selectionMode: SPTypes.FieldUserSelectionType.PeopleOnly,
+                } as Helper.IFieldInfoUser,
+                {
                     name: "ItemType",
                     title: "Item Type",
                     type: Helper.SPCfgFieldType.Choice,
@@ -22,6 +36,12 @@ export const Configuration = Helper.SPConfig({
                         "Type 1", "Type 2", "Type 3", "Type 4", "Type 5"
                     ]
                 } as Helper.IFieldInfoChoice,
+                {
+                    name: "Comments",
+                    title: "Comments",
+                    type: Helper.SPCfgFieldType.Note,
+                    noteType: SPTypes.FieldNoteType.TextOnly
+                } as Helper.IFieldInfoNote,
                 {
                     name: "Status",
                     title: "Status",
@@ -39,10 +59,24 @@ export const Configuration = Helper.SPConfig({
                 {
                     ViewName: "All Items",
                     ViewFields: [
-                        "LinkTitle", "ItemType", "Status"
+                        "LinkTitle", "ItemType", "Status", "AssignedTo", "Requester", "Comments"
                     ]
                 }
             ]
+        },
+        // Templates Library
+        {
+            ListInformation: {
+                Title: Strings.DocumentLibraries.set1,
+                BaseTemplate: SPTypes.ListTemplateType.DocumentLibrary
+            }
+        },
+        // How Tos Library
+        {
+            ListInformation: {
+                Title: Strings.DocumentLibraries.set2,
+                BaseTemplate: SPTypes.ListTemplateType.DocumentLibrary
+            }
         }
     ]
 });

@@ -19,6 +19,10 @@ const Strings = {
     Lists: {
         Main: "Dashboard"
     },
+    DocumentLibraries: {
+        set1: "Templates",
+        set2: "How-Tos"
+    },
     ProjectName: "SP Dashboard",
     ProjectDescription: "Created using the gd-sprest-bs library.",
     SourceUrl: ContextInfo.webServerRelativeUrl,
