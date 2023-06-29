@@ -69,7 +69,14 @@ export class App {
                     order: [[1, "asc"]]
                 },
                 columns: [
-                    
+                    {
+                        name: "ItemType",
+                        title: "Type"
+                    },
+                    {
+                        name: "Status",
+                        title: "Status"
+                    }
                 ]
                 // columns: [
                 //     {
