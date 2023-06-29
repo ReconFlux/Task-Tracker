@@ -3,6 +3,8 @@ import { Components } from "gd-sprest-bs";
 import * as jQuery from "jquery";
 import { DataSource, IItem } from "./ds";
 import Strings from "./strings";
+import { folderFill } from "gd-sprest-bs/build/icons/svgs/folderFill";
+import * as moment from "moment";
 
 /**
  * Main Application
@@ -76,6 +78,44 @@ export class App {
                     {
                         name: "Status",
                         title: "Status"
+                    },
+                    {
+                        name: "",
+                        title: "Requester",
+                        onRenderCell: (el, column, item: IItem) => {
+                            // Grabs the users Title
+                            el.innerHTML = item ? item.Requester.Title : "";
+                        }
+                    },
+                    {
+                        name: "",
+                        title: "Lasst Modified",
+                        onRenderCell: (el, column, item: IItem) => {
+                            // Grabs the users Title
+                            let mod = item ? item.Modified : "";
+                            el.innerHTML =  moment(mod).format(Strings.DateTimeFormat);
+                        }
+                    },
+                    {
+                        // 6 - Documents
+                        name: "Documents",
+                        title: "Documents",
+                        onRenderCell: (el, column, item: IItem) => {
+                            // Render the document column
+                            Components.Tooltip({
+                                el: el,
+                                content: "Upload Documents",
+                                btnProps: {
+                                    iconType: folderFill,
+                                    iconSize: 28,
+                                    type: Components.ButtonTypes.OutlineSecondary,
+                                    isLarge: true,
+                                    onClick: () => {
+                                        //new DocModal(el, item);
+                                    }
+                                }
+                            });
+                        }
                     }
                 ]
                 // columns: [
