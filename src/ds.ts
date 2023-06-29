@@ -24,10 +24,13 @@ export class DataSource {
         return new Promise((resolve, reject) => {
             // Load the data
             this.load().then(() => {
-                // Load the status filters
+                // Load the templates library
                 this.loadTemplateFiles().then(() => {
-                    // Resolve the request
-                    resolve();
+                    // load the how to document library
+                    this.loadHowtoFiles().then(() => {
+                        // Resolve the request
+                        resolve();
+                    }, reject);
                 }, reject);
             }, reject);
         });
@@ -67,8 +70,8 @@ export class DataSource {
 
 
     // Templates Files 
-    private static _files: Types.SP.File[];
-    static get Files(): Types.SP.File[] { return this._files; }
+    private static _tempFiles: Types.SP.File[];
+    static get tempFiles(): Types.SP.File[] { return this._tempFiles; }
     private static _folders: Types.SP.FolderOData[];
     static get Folders(): Types.SP.FolderOData[] { return this._folders; }
     static loadTemplateFiles(): PromiseLike<void> {
@@ -82,7 +85,37 @@ export class DataSource {
                 ]
             }).execute(folder => {
                 // Set the folders and files
-                this._files = folder.Files.results;
+                this._tempFiles = folder.Files.results;
+                this._folders = [];
+                for (let i = 0; i < folder.Folders.results.length; i++) {
+                    let subFolder = folder.Folders.results[i];
+                    // Ignore the OTB Forms internal folder  
+                    if (subFolder.Name != "Forms") { this._folders.push(subFolder as any); }
+                }
+
+                // Resolve the request
+                resolve();
+            }, reject);
+        });
+    }
+
+    // How Tos Document Library Here
+    private static _howtoFiles: Types.SP.File[];
+    static get howtoFiles(): Types.SP.File[] { return this._howtoFiles; }
+    private static _Howfolders: Types.SP.FolderOData[];
+    static get HowFolders(): Types.SP.FolderOData[] { return this._Howfolders; }
+    static loadHowtoFiles(): PromiseLike<void> {
+        // Return a promise
+        return new Promise((resolve, reject) => {
+            // Load the library
+            List(Strings.DocumentLibraries.set1).RootFolder().query({
+                Expand: [
+                    "Folders", "Folders/Files", "Folders/Files/Author", "Folders/Files/ListItemAllFields", "Folders/Files/ModifiedBy",
+                    "Files", "Files/Author", "Files/ListItemAllFields", "Files/ModifiedBy"
+                ]
+            }).execute(folder => {
+                // Set the folders and files
+                this._howtoFiles = folder.Files.results;
                 this._folders = [];
                 for (let i = 0; i < folder.Folders.results.length; i++) {
                     let subFolder = folder.Folders.results[i];
