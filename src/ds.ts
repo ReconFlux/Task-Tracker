@@ -9,6 +9,9 @@ import Strings from "./strings";
 export interface IListItem extends Types.SP.ListItem {
     ItemType: string;
     Status: string;
+    Comments: string;
+    AssignedTo: { Id: number; Title: string; }
+    Requester: { Id: number; Title: string; }
 }
 
 /**
