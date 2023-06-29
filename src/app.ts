@@ -35,6 +35,16 @@ export class App {
                     }
                 ]
             },
+            filters: {
+                items: [{
+                    header: "By Status",
+                    items: DataSource.LOEFilters,
+                    onFilter: (value: string) => {
+                        // Filter the table and timeline
+                        dashboard.filter(2, value);
+                    }
+                }]
+            },
             footer: {
                 itemsEnd: [
                     {

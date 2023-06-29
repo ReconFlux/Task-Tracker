@@ -29,11 +29,14 @@ export class DataSource {
                 this.loadTemplateFiles().then(() => {
                     // load the how to document library
                     this.loadHowtoFiles().then(() => {
+                        // Load the status filters
+                            this.LoadLOEFilters().then(() => {
                         // Resolve the request
                         resolve();
                     }, reject);
                 }, reject);
             }, reject);
+        }, reject);
         });
     }
 
@@ -162,6 +165,32 @@ export class DataSource {
     }
 
 
+    // LOE Filters
+    private static _LOEFilters: Components.ICheckboxGroupItem[] = null;
+    static get LOEFilters(): Components.ICheckboxGroupItem[] { return this._LOEFilters; }
+    static LoadLOEFilters(): PromiseLike<Components.ICheckboxGroupItem[]> {
+        // Return a promise
+        return new Promise((resolve, reject) => {
+            // Get the status field
+            List(Strings.Lists.Main).Fields("Status").execute((fld: Types.SP.FieldChoice) => {
+                let items: Components.ICheckboxGroupItem[] = [];
+
+                // Parse the choices
+                for (let i = 0; i < fld.Choices.results.length; i++) {
+                    // Add an item
+                    items.push({
+                        label: fld.Choices.results[i],
+                        type: Components.CheckboxGroupTypes.Switch,
+                        isSelected: false
+                    });
+                }
+
+                // Set the filters and resolve the promise
+                this._LOEFilters = items;
+                resolve(items);
+            }, reject);
+        });
+    }
 
 
 }
