@@ -11,6 +11,9 @@ export const Configuration = Helper.SPConfig({
                 Title: Strings.Lists.Main,
                 BaseTemplate: SPTypes.ListTemplateType.GenericList
             },
+            TitleFieldRequired: false,
+            TitleFieldDisplayName: "  ",
+            TitleFieldDefaultValue: " ",
             CustomFields: [
                 {
                     name: "AssignedTo",
