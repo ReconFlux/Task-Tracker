@@ -1,20 +1,21 @@
-import { Dashboard } from "dattatable";
-import { Components, List, Types, Web } from "gd-sprest-bs";
+import { List } from "dattatable";
+import { Components, Types, Web } from "gd-sprest-bs";
 import Strings from "./strings";
 
-
-// Item
+/**
+ * List Item
+ * Add your custom fields here
+ */
 export interface IItem extends Types.SP.ListItem {
-    Objectives: string;
-    Status: string;
     ItemType: string;
+    Status: string;
     AssignedTo: { Id: number; Title: string; }
     Requester: { Id: number; Title: string; }
     Modified: string;
 }
 
 // Item
-export interface FItem extends Types.SP.FileOData {
+export interface FolderItem extends Types.SP.FileOData {
     ListItemAllFields: Types.SP.ListItem & Types.SP.ListItemCollections & Types.SP.ListItemCollectionMethods & {
     }
 }
@@ -23,124 +24,66 @@ export interface FItem extends Types.SP.FileOData {
  * Data Source
  */
 export class DataSource {
+    // List
+    private static _list: List<IItem> = null;
+    static get List(): List<IItem> { return this._list; }
 
+    // List Items
+    static get ListItems(): IItem[] { return this.List.Items; }
 
-    // Initializes the application
-    static init(): PromiseLike<void> {
+    // Status Filters
+    private static _statusFilters: Components.ICheckboxGroupItem[] = null;
+    static get StatusFilters(): Components.ICheckboxGroupItem[] { return this._statusFilters; }
+    static loadStatusFilters(): PromiseLike<Components.ICheckboxGroupItem[]> {
         // Return a promise
         return new Promise((resolve, reject) => {
-            // Load the data
-            this.load().then(() => {
-                // Load the templates library
-                this.loadTemplateFiles().then(() => {
-                    // load the how to document library
-                    this.loadHowtoFiles().then(() => {
-                        // Load the status filters
-                            this.LoadLOEFilters().then(() => {
-                                // Load Type Filters
-                                    this.LoadTypeFilters().then(() => {
-                        // Resolve the request
-                        resolve();
-                    }, reject);
-                }, reject);
-            }, reject);
-            }, reject);
-        }, reject);
-        });
-    }
+            // Get the status field
+            Web(Strings.SourceUrl).Lists(Strings.Lists.Main).Fields("Status").execute((fld: Types.SP.FieldChoice) => {
+                let items: Components.ICheckboxGroupItem[] = [];
 
-
-
-    // Loads the list data
-    private static _items: IItem[] = null;
-    static get Items(): IItem[] { return this._items; }
-    static load(): PromiseLike<IItem[]> {
-        // Return a promise
-        return new Promise((resolve, reject) => {
-            // Load the data
-            List(Strings.Lists.Main).Items().query({
-
-                GetAllItems: true,
-                Expand: ["AssignedTo", "Requester"],
-                OrderBy: ["Title"],
-                Select: ["*", "AssignedTo/Id", "AssignedTo/Title", "Requester/Id", "Requester/Title"],
-                Top: 5000
-            }).execute(
-                // Success
-                items => {
-                    // Set the items
-                    this._items = items.results as any;
-
-                    // Resolve the request
-                    resolve(this._items);
-                },
-                // Error
-                () => { reject(); }
-            );
-        });
-    }
-
-
-
-    // Templates Files 
-    private static _tempFiles: Types.SP.File[];
-    static get tempFiles(): Types.SP.File[] { return this._tempFiles; }
-    private static _folders: Types.SP.FolderOData[];
-    static get Folders(): Types.SP.FolderOData[] { return this._folders; }
-    static loadTemplateFiles(): PromiseLike<void> {
-        // Return a promise
-        return new Promise((resolve, reject) => {
-            // Load the library
-            List(Strings.DocumentLibraries.set1).RootFolder().query({
-                Expand: [
-                    "Folders", "Folders/Files", "Folders/Files/Author", "Folders/Files/ListItemAllFields", "Folders/Files/ModifiedBy",
-                    "Files", "Files/Author", "Files/ListItemAllFields", "Files/ModifiedBy"
-                ]
-            }).execute(folder => {
-                // Set the folders and files
-                this._tempFiles = folder.Files.results;
-                this._folders = [];
-                for (let i = 0; i < folder.Folders.results.length; i++) {
-                    let subFolder = folder.Folders.results[i];
-                    // Ignore the OTB Forms internal folder  
-                    if (subFolder.Name != "Forms") { this._folders.push(subFolder as any); }
+                // Parse the choices
+                for (let i = 0; i < fld.Choices.results.length; i++) {
+                    // Add an item
+                    items.push({
+                        label: fld.Choices.results[i],
+                        type: Components.CheckboxGroupTypes.Switch
+                    });
                 }
 
-                // Resolve the request
-                resolve();
+                // Set the filters and resolve the promise
+                this._statusFilters = items;
+                resolve(items);
             }, reject);
         });
     }
 
-    // How Tos Document Library Here
-    private static _howtoFiles: Types.SP.File[];
-    static get howtoFiles(): Types.SP.File[] { return this._howtoFiles; }
-    private static _Howfolders: Types.SP.FolderOData[];
-    static get HowFolders(): Types.SP.FolderOData[] { return this._Howfolders; }
-    static loadHowtoFiles(): PromiseLike<void> {
+    // Type Filters
+    private static _typeFilters: Components.ICheckboxGroupItem[] = null;
+    static get TypeFilters(): Components.ICheckboxGroupItem[] { return this._typeFilters; }
+    static loadTypeFilters(): PromiseLike<Components.ICheckboxGroupItem[]> {
         // Return a promise
         return new Promise((resolve, reject) => {
-            // Load the library
-            List(Strings.DocumentLibraries.set1).RootFolder().query({
-                Expand: [
-                    "Folders", "Folders/Files", "Folders/Files/Author", "Folders/Files/ListItemAllFields", "Folders/Files/ModifiedBy",
-                    "Files", "Files/Author", "Files/ListItemAllFields", "Files/ModifiedBy"
-                ]
-            }).execute(folder => {
-                // Set the folders and files
-                this._howtoFiles = folder.Files.results;
-                this._folders = [];
-                for (let i = 0; i < folder.Folders.results.length; i++) {
-                    let subFolder = folder.Folders.results[i];
-                    // Ignore the OTB Forms internal folder  
-                    if (subFolder.Name != "Forms") { this._folders.push(subFolder as any); }
+            // Get the status field
+            Web(Strings.SourceUrl).Lists(Strings.Lists.Main).Fields("ItemType").execute((fld: Types.SP.FieldChoice) => {
+                let items: Components.ICheckboxGroupItem[] = [];
+
+                // Parse the choices
+                for (let i = 0; i < fld.Choices.results.length; i++) {
+                    // Add an item
+                    items.push({
+                        label: fld.Choices.results[i],
+                        type: Components.CheckboxGroupTypes.Switch
+                    });
                 }
 
-                // Resolve the request
-                resolve();
+                // Set the filters and resolve the promise
+                this._typeFilters = items;
+                resolve(items);
             }, reject);
         });
     }
+
+    
 
     // Gets the item id from the query string
     static getItemIdFromQS() {
@@ -160,84 +103,41 @@ export class DataSource {
         }
     }
 
-    private static _dashboard: Dashboard = null;
-    static get Dashboard(): Dashboard { return this._dashboard; }
-    static setDashBoard(dashboard: Dashboard) {
-        this._dashboard = dashboard;
-    }
-    static refreshDashboard() {
-        if (this._dashboard != null) {
-            this.load().then((items) => {
-                this._dashboard.refresh(items);
-            });
-        }
-    }
-
-
-    // LOE Filters
-    private static _LOEFilters: Components.ICheckboxGroupItem[] = null;
-    static get LOEFilters(): Components.ICheckboxGroupItem[] { return this._LOEFilters; }
-    static LoadLOEFilters(): PromiseLike<Components.ICheckboxGroupItem[]> {
+    // Initializes the application
+    static init(): PromiseLike<void> {
         // Return a promise
         return new Promise((resolve, reject) => {
-            // Get the status field
-            List(Strings.Lists.Main).Fields("Status").execute((fld: Types.SP.FieldChoice) => {
-                let items: Components.ICheckboxGroupItem[] = [];
-
-                // Parse the choices
-                for (let i = 0; i < fld.Choices.results.length; i++) {
-                    // Add an item
-                    items.push({
-                        label: fld.Choices.results[i],
-                        type: Components.CheckboxGroupTypes.Switch,
-                        isSelected: false
-                    });
+            // Initialize the list
+            this._list = new List<IItem>({
+                listName: Strings.Lists.Main,
+                itemQuery: {
+                    GetAllItems: true,
+                    Expand: ["AssignedTo", "Requester"],
+                    OrderBy: ["Title"],
+                    Select: ["*", "AssignedTo/Id", "AssignedTo/Title", "Requester/Id", "Requester/Title"],
+                    Top: 5000
+                },
+                onInitError: reject,
+                onInitialized: () => {
+                    // Load the status filters
+                    this.loadStatusFilters().then(() => {
+                        // Load the Type Filters
+                        this.loadTypeFilters().then(() => {
+                        // Resolve the request
+                        resolve();
+                    }, reject);
+                }, reject);
                 }
-
-                // Set the filters and resolve the promise
-                this._LOEFilters = items;
-                resolve(items);
-            }, reject);
+            });
         });
     }
 
-    // LOE Filters
-    private static _TypeFilters: Components.ICheckboxGroupItem[] = null;
-    static get TypeFilters(): Components.ICheckboxGroupItem[] { return this._TypeFilters; }
-    static LoadTypeFilters(): PromiseLike<Components.ICheckboxGroupItem[]> {
+    // Refreshes the list data
+    static refresh(): PromiseLike<IItem[]> {
         // Return a promise
         return new Promise((resolve, reject) => {
-            // Get the status field
-            List(Strings.Lists.Main).Fields("ItemType").execute((fld: Types.SP.FieldChoice) => {
-                let items: Components.ICheckboxGroupItem[] = [];
-
-                // Parse the choices
-                for (let i = 0; i < fld.Choices.results.length; i++) {
-                    // Add an item
-                    items.push({
-                        label: fld.Choices.results[i],
-                        type: Components.CheckboxGroupTypes.Switch,
-                        isSelected: false
-                    });
-                }
-
-                // Set the filters and resolve the promise
-                this._TypeFilters = items;
-                resolve(items);
-            }, reject);
+            // Refresh the data
+            DataSource.List.refresh().then(resolve, reject);
         });
     }
-
-
-        // Refreshes the list data
-        static refresh(): PromiseLike<IItem[]> {
-            // Return a promise
-            return new Promise((resolve, reject) => {
-                // Refresh the data
-                DataSource.List.refresh().then(resolve, reject);
-            });
-        }
-
-
-
 }

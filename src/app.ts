@@ -35,15 +35,14 @@ export class App {
                         text: "Create Item",
                         isButton: true,
                         onClick: () => {
-                            // Create an item
-                            ItemForm.create({
-
-                                // Custom Header
-                                onSetHeader: (el) => {
-                                    el.innerText = "Create New Event"
-                                },
+                            // Show the new form
+                            DataSource.List.newForm({
                                 onUpdate: () => {
-                                    
+                                    // Refresh the data
+                                    DataSource.refresh().then(() => {
+                                        // Refresh the table
+                                        dashboard.refresh(DataSource.ListItems);
+                                    });
                                 }
                             });
                         }
@@ -54,7 +53,7 @@ export class App {
                 items: [
                 {
                     header: "By Status",
-                    items: DataSource.LOEFilters,
+                    items: DataSource.StatusFilters,
                     onFilter: (value: string) => {
                         // Filter the table
                         dashboard.filter(2, value);
@@ -78,7 +77,7 @@ export class App {
                 ]
             },
             table: {
-                rows: DataSource.Items,
+                rows: DataSource.ListItems,
                 dtProps: {
                     dom: 'rt<"row"<"col-sm-4"l><"col-sm-4"i><"col-sm-4"p>>',
                     columnDefs: [
@@ -235,15 +234,6 @@ export class App {
                 //     }
                 // ]
             }
-        });
-    }
-
-    // Refreshes the dashboard
-    private refresh() {
-        // Refresh the data
-        DataSource.load().then(items => {
-            // Update the dashboard and timeline
-            //
         });
     }
 }
