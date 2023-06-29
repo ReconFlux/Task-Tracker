@@ -21,16 +21,6 @@ export class App {
             el,
             hideHeader: true,
             useModal: true,
-            filters: {
-                items: [{
-                    header: "By Status",
-                    items: DataSource.StatusFilters,
-                    onFilter: (value: string) => {
-                        // Filter the table
-                        dashboard.filter(2, value);
-                    }
-                }]
-            },
             navigation: {
                 title: Strings.ProjectName,
                 items: [
@@ -50,7 +40,7 @@ export class App {
                 ]
             },
             table: {
-                rows: DataSource.ListItems,
+                rows: DataSource.Items,
                 dtProps: {
                     dom: 'rt<"row"<"col-sm-4"l><"col-sm-4"i><"col-sm-4"p>>',
                     columnDefs: [
@@ -79,54 +69,57 @@ export class App {
                     order: [[1, "asc"]]
                 },
                 columns: [
-                    {
-                        name: "",
-                        title: "Title",
-                        onRenderCell: (el, column, item: IListItem) => {
-                            // Render a buttons
-                            Components.ButtonGroup({
-                                el,
-                                buttons: [
-                                    {
-                                        text: item.Title,
-                                        type: Components.ButtonTypes.OutlinePrimary,
-                                        onClick: () => {
-                                            // Show the display form
-                                            DataSource.List.viewForm({
-                                                itemId: item.Id
-                                            });
-                                        }
-                                    },
-                                    {
-                                        text: "Edit",
-                                        type: Components.ButtonTypes.OutlineSuccess,
-                                        onClick: () => {
-                                            // Show the edit form
-                                            DataSource.List.editForm({
-                                                itemId: item.Id,
-                                                onUpdate: () => {
-                                                    // Refresh the data
-                                                    DataSource.refresh().then(() => {
-                                                        // Refresh the table
-                                                        dashboard.refresh(DataSource.ListItems);
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    }
-                                ]
-                            });
-                        }
-                    },
-                    {
-                        name: "ItemType",
-                        title: "Item Type"
-                    },
-                    {
-                        name: "Status",
-                        title: "Status"
-                    }
+                    
                 ]
+                // columns: [
+                //     {
+                //         name: "",
+                //         title: "Title",
+                //         onRenderCell: (el, column, item: IItem) => {
+                //             // Render a buttons
+                //             Components.ButtonGroup({
+                //                 el,
+                //                 buttons: [
+                //                     {
+                //                         text: item.Title,
+                //                         type: Components.ButtonTypes.OutlinePrimary,
+                //                         onClick: () => {
+                //                             // Show the display form
+                //                             DataSource.List.viewForm({
+                //                                 itemId: item.Id
+                //                             });
+                //                         }
+                //                     },
+                //                     {
+                //                         text: "Edit",
+                //                         type: Components.ButtonTypes.OutlineSuccess,
+                //                         onClick: () => {
+                //                             // Show the edit form
+                //                             DataSource.List.editForm({
+                //                                 itemId: item.Id,
+                //                                 onUpdate: () => {
+                //                                     // Refresh the data
+                //                                     DataSource.refresh().then(() => {
+                //                                         // Refresh the table
+                //                                         dashboard.refresh(DataSource.ListItems);
+                //                                     });
+                //                                 }
+                //                             });
+                //                         }
+                //                     }
+                //                 ]
+                //             });
+                //         }
+                //     },
+                //     {
+                //         name: "ItemType",
+                //         title: "Item Type"
+                //     },
+                //     {
+                //         name: "Status",
+                //         title: "Status"
+                //     }
+                // ]
             }
         });
     }
