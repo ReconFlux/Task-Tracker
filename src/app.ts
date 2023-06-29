@@ -119,20 +119,20 @@ export class App {
                                     iconSize: 18,
                                     isLarge: true,
                                     type: Components.ButtonTypes.OutlineSecondary,
-                                    // onClick: () => {
-                                    //     // Show the edit form
-                                    //     ItemForm.edit({
-                                    //         itemId: item.Id,
-                                    //         onUpdate: () => {
-                                    //             // Refresh the data
-                                    //             DataSource.init().then(items => {
-                                    //                 // Update the data
-                                    //                 this.refresh(items);
-                                    //             });
-                                    //             window.location.reload();
-                                    //         }
-                                    //     });
-                                    // }
+                                    onClick: () => {
+                                        // Show the edit form
+                                        ItemForm.edit({
+                                            itemId: item.Id,
+                                            onUpdate: () => {
+                                                // Refresh the data
+                                                DataSource.init().then(items => {
+                                                    // Update the data
+                                                    this.refresh(items);
+                                                });
+                                                window.location.reload();
+                                            }
+                                        });
+                                    }
                                 }
                             });
                         }
