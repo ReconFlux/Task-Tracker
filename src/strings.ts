@@ -26,6 +26,7 @@ const Strings = {
     ProjectName: "Task Tracking Dashboard",
     ProjectDescription: "Created using the gd-sprest-bs library.",
     SourceUrl: ContextInfo.webServerRelativeUrl,
+    DateTimeFormat: "YYYY-MM-DD  HH:mm",
     Version: "0.1"
 };
 export default Strings;

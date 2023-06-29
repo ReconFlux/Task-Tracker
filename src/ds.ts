@@ -10,6 +10,7 @@ export interface IItem extends Types.SP.ListItem {
     ItemType: string;
     AssignedTo: { Id: number; Title: string; }
     Requester: { Id: number; Title: string; }
+    Modified: string;
 }
 
 
