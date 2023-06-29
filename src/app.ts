@@ -36,14 +36,24 @@ export class App {
                 ]
             },
             filters: {
-                items: [{
+                items: [
+                {
                     header: "By Status",
                     items: DataSource.LOEFilters,
                     onFilter: (value: string) => {
-                        // Filter the table and timeline
+                        // Filter the table
                         dashboard.filter(2, value);
                     }
-                }]
+                },
+                {
+                    header: "By Type",
+                    items: DataSource.LoadTypeFilters,
+                    onFilter: (value: string) => {
+                        // Filter the table
+                        dashboard.filter(1, value);
+                    }
+                }
+            ]
             },
             footer: {
                 itemsEnd: [

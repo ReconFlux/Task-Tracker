@@ -31,10 +31,13 @@ export class DataSource {
                     this.loadHowtoFiles().then(() => {
                         // Load the status filters
                             this.LoadLOEFilters().then(() => {
+                                // Load Type Filters
+                                    this.LoadTypeFilters().then(() => {
                         // Resolve the request
                         resolve();
                     }, reject);
                 }, reject);
+            }, reject);
             }, reject);
         }, reject);
         });
@@ -187,6 +190,33 @@ export class DataSource {
 
                 // Set the filters and resolve the promise
                 this._LOEFilters = items;
+                resolve(items);
+            }, reject);
+        });
+    }
+
+    // LOE Filters
+    private static _TypeFilters: Components.ICheckboxGroupItem[] = null;
+    static get TypeFilters(): Components.ICheckboxGroupItem[] { return this._TypeFilters; }
+    static LoadTypeFilters(): PromiseLike<Components.ICheckboxGroupItem[]> {
+        // Return a promise
+        return new Promise((resolve, reject) => {
+            // Get the status field
+            List(Strings.Lists.Main).Fields("ItemType").execute((fld: Types.SP.FieldChoice) => {
+                let items: Components.ICheckboxGroupItem[] = [];
+
+                // Parse the choices
+                for (let i = 0; i < fld.Choices.results.length; i++) {
+                    // Add an item
+                    items.push({
+                        label: fld.Choices.results[i],
+                        type: Components.CheckboxGroupTypes.Switch,
+                        isSelected: false
+                    });
+                }
+
+                // Set the filters and resolve the promise
+                this._TypeFilters = items;
                 resolve(items);
             }, reject);
         });
