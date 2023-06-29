@@ -4,6 +4,7 @@ import * as jQuery from "jquery";
 import { DataSource, IItem } from "./ds";
 import Strings from "./strings";
 import { folderFill } from "gd-sprest-bs/build/icons/svgs/folderFill";
+import { pencilSquare } from "gd-sprest-bs/build/icons/svgs/pencilSquare";
 import * as moment from "moment";
 
 /**
@@ -71,6 +72,37 @@ export class App {
                     order: [[1, "asc"]]
                 },
                 columns: [
+                    {
+                        name: "",
+                        title: "",
+                        onRenderCell(el, column, item: IItem) {
+                            Components.Tooltip({
+                                el: el,
+                                content: "Edit Item",
+                                btnProps: {
+                                    // Render the button
+                                    iconType: pencilSquare,
+                                    iconSize: 18,
+                                    isLarge: true,
+                                    type: Components.ButtonTypes.OutlineSecondary,
+                                    // onClick: () => {
+                                    //     // Show the edit form
+                                    //     ItemForm.edit({
+                                    //         itemId: item.Id,
+                                    //         onUpdate: () => {
+                                    //             // Refresh the data
+                                    //             DataSource.init().then(items => {
+                                    //                 // Update the data
+                                    //                 this.refresh(items);
+                                    //             });
+                                    //             window.location.reload();
+                                    //         }
+                                    //     });
+                                    // }
+                                }
+                            });
+                        }
+                    },
                     {
                         name: "ItemType",
                         title: "Type"
