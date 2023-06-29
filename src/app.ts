@@ -47,7 +47,7 @@ export class App {
                 },
                 {
                     header: "By Type",
-                    items: DataSource.LoadTypeFilters,
+                    items: DataSource.TypeFilters,
                     onFilter: (value: string) => {
                         // Filter the table
                         dashboard.filter(1, value);
