@@ -1,7 +1,7 @@
 import { Dashboard } from "dattatable";
 import { Components } from "gd-sprest-bs";
 import * as jQuery from "jquery";
-import { DataSource, IListItem } from "./ds";
+import { DataSource, IItem } from "./ds";
 import Strings from "./strings";
 
 /**
@@ -37,19 +37,8 @@ export class App {
                     {
                         className: "btn-outline-light",
                         text: "Create Item",
-                        isButton: true,
-                        onClick: () => {
-                            // Show the new form
-                            DataSource.List.newForm({
-                                onUpdate: () => {
-                                    // Refresh the data
-                                    DataSource.refresh().then(() => {
-                                        // Refresh the table
-                                        dashboard.refresh(DataSource.ListItems);
-                                    });
-                                }
-                            });
-                        }
+                        isButton: true
+                        // onClick here
                     }
                 ]
             },

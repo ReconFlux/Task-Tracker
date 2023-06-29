@@ -1,52 +1,97 @@
-import { List } from "dattatable";
-import { Components, Types, Web } from "gd-sprest-bs";
+import { Dashboard } from "dattatable";
+import { Components, List, Types, Web } from "gd-sprest-bs";
 import Strings from "./strings";
 
-/**
- * List Item
- * Add your custom fields here
- */
-export interface IListItem extends Types.SP.ListItem {
-    ItemType: string;
+
+// Item
+export interface IItem extends Types.SP.ListItem {
+    Objectives: string;
     Status: string;
-    Comments: string;
+    ItemType: string;
     AssignedTo: { Id: number; Title: string; }
     Requester: { Id: number; Title: string; }
 }
+
 
 /**
  * Data Source
  */
 export class DataSource {
-    // List
-    private static _list: List<IListItem> = null;
-    static get List(): List<IListItem> { return this._list; }
 
-    // List Items
-    static get ListItems(): IListItem[] { return this.List.Items; }
-
-    // Status Filters
-    private static _statusFilters: Components.ICheckboxGroupItem[] = null;
-    static get StatusFilters(): Components.ICheckboxGroupItem[] { return this._statusFilters; }
-    static loadStatusFilters(): PromiseLike<Components.ICheckboxGroupItem[]> {
+    // Initializes the application
+    static init(): PromiseLike<void> {
         // Return a promise
         return new Promise((resolve, reject) => {
-            // Get the status field
-            Web(Strings.SourceUrl).Lists(Strings.Lists.Main).Fields("Status").execute((fld: Types.SP.FieldChoice) => {
-                let items: Components.ICheckboxGroupItem[] = [];
+            // Load the data
+            this.load().then(() => {
+                // Load the status filters
+                this.loadTemplateFiles().then(() => {
+                    // Resolve the request
+                    resolve();
+                }, reject);
+            }, reject);
+        });
+    }
 
-                // Parse the choices
-                for (let i = 0; i < fld.Choices.results.length; i++) {
-                    // Add an item
-                    items.push({
-                        label: fld.Choices.results[i],
-                        type: Components.CheckboxGroupTypes.Switch
-                    });
+
+
+    // Loads the list data
+    private static _items: IItem[] = null;
+    static get Items(): IItem[] { return this._items; }
+    static load(): PromiseLike<IItem[]> {
+        // Return a promise
+        return new Promise((resolve, reject) => {
+            // Load the data
+            List(Strings.Lists.Main).Items().query({
+
+                GetAllItems: true,
+                Expand: ["AssignedTo", "Requester"],
+                OrderBy: ["Title"],
+                Select: ["*", "AssignedTo/Id", "AssignedTo/Title", "Requester/Id", "Requester/Title"],
+                Top: 5000
+            }).execute(
+                // Success
+                items => {
+                    // Set the items
+                    this._items = items.results as any;
+
+                    // Resolve the request
+                    resolve(this._items);
+                },
+                // Error
+                () => { reject(); }
+            );
+        });
+    }
+
+
+
+    // Templates Files 
+    private static _files: Types.SP.File[];
+    static get Files(): Types.SP.File[] { return this._files; }
+    private static _folders: Types.SP.FolderOData[];
+    static get Folders(): Types.SP.FolderOData[] { return this._folders; }
+    static loadTemplateFiles(): PromiseLike<void> {
+        // Return a promise
+        return new Promise((resolve, reject) => {
+            // Load the library
+            List(Strings.DocumentLibraries.set1).RootFolder().query({
+                Expand: [
+                    "Folders", "Folders/Files", "Folders/Files/Author", "Folders/Files/ListItemAllFields", "Folders/Files/ModifiedBy",
+                    "Files", "Files/Author", "Files/ListItemAllFields", "Files/ModifiedBy"
+                ]
+            }).execute(folder => {
+                // Set the folders and files
+                this._files = folder.Files.results;
+                this._folders = [];
+                for (let i = 0; i < folder.Folders.results.length; i++) {
+                    let subFolder = folder.Folders.results[i];
+                    // Ignore the OTB Forms internal folder  
+                    if (subFolder.Name != "Forms") { this._folders.push(subFolder as any); }
                 }
 
-                // Set the filters and resolve the promise
-                this._statusFilters = items;
-                resolve(items);
+                // Resolve the request
+                resolve();
             }, reject);
         });
     }
@@ -69,38 +114,20 @@ export class DataSource {
         }
     }
 
-    // Initializes the application
-    static init(): PromiseLike<void> {
-        // Return a promise
-        return new Promise((resolve, reject) => {
-            // Initialize the list
-            this._list = new List<IListItem>({
-                listName: Strings.Lists.Main,
-                itemQuery: {
-                    GetAllItems: true,
-                    Expand: ["AssignedTo", "Requester"],
-                    OrderBy: ["Title"],
-                    Select: ["*", "AssignedTo/Id", "AssignedTo/Title", "Requester/Id", "Requester/Title"],
-                    Top: 5000
-                },
-                onInitError: reject,
-                onInitialized: () => {
-                    // Load the status filters
-                    this.loadStatusFilters().then(() => {
-                        // Resolve the request
-                        resolve();
-                    }, reject);
-                }
+    private static _dashboard: Dashboard = null;
+    static get Dashboard(): Dashboard { return this._dashboard; }
+    static setDashBoard(dashboard: Dashboard) {
+        this._dashboard = dashboard;
+    }
+    static refreshDashboard() {
+        if (this._dashboard != null) {
+            this.load().then((items) => {
+                this._dashboard.refresh(items);
             });
-        });
+        }
     }
 
-    // Refreshes the list data
-    static refresh(): PromiseLike<IListItem[]> {
-        // Return a promise
-        return new Promise((resolve, reject) => {
-            // Refresh the data
-            DataSource.List.refresh().then(resolve, reject);
-        });
-    }
+
+
+
 }
