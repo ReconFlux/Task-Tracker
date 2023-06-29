@@ -17,13 +17,13 @@ const Strings = {
     AppElementId: "sp-dashboard",
     GlobalVariable: "SPDashboard",
     Lists: {
-        Main: "Dashboard"
+        Main: "Tasks"
     },
     DocumentLibraries: {
         set1: "Templates",
         set2: "How-Tos"
     },
-    ProjectName: "SP Dashboard",
+    ProjectName: "Task Tracking Dashboard",
     ProjectDescription: "Created using the gd-sprest-bs library.",
     SourceUrl: ContextInfo.webServerRelativeUrl,
     Version: "0.1"
