@@ -122,6 +122,10 @@ export class App {
                                     onClick: () => {
                                         // Show the edit form
                                         ItemForm.edit({
+                                            onSetHeader(el) {
+                                                el.innerHTML = "Update Task";
+                                            },
+                                            onCreateEditForm: props => { return this.editProps(props); },
                                             itemId: item.Id,
                                             onUpdate: () => {
                                                 // Refresh the data
@@ -236,4 +240,13 @@ export class App {
             }
         });
     }
+
+    // Edit form properties for Step 3
+    public editProps(props: Components.IListFormEditProps) {
+        props.excludeFields = [
+            "Title"
+        ]
+        return props;
+    }
 }
+
