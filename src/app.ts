@@ -188,65 +188,26 @@ export class App {
                         }
                     }
                 ]
-                // columns: [
-                //     {
-                //         name: "",
-                //         title: "Title",
-                //         onRenderCell: (el, column, item: IItem) => {
-                //             // Render a buttons
-                //             Components.ButtonGroup({
-                //                 el,
-                //                 buttons: [
-                //                     {
-                //                         text: item.Title,
-                //                         type: Components.ButtonTypes.OutlinePrimary,
-                //                         onClick: () => {
-                //                             // Show the display form
-                //                             DataSource.List.viewForm({
-                //                                 itemId: item.Id
-                //                             });
-                //                         }
-                //                     },
-                //                     {
-                //                         text: "Edit",
-                //                         type: Components.ButtonTypes.OutlineSuccess,
-                //                         onClick: () => {
-                //                             // Show the edit form
-                //                             DataSource.List.editForm({
-                //                                 itemId: item.Id,
-                //                                 onUpdate: () => {
-                //                                     // Refresh the data
-                //                                     DataSource.refresh().then(() => {
-                //                                         // Refresh the table
-                //                                         dashboard.refresh(DataSource.ListItems);
-                //                                     });
-                //                                 }
-                //                             });
-                //                         }
-                //                     }
-                //                 ]
-                //             });
-                //         }
-                //     },
-                //     {
-                //         name: "ItemType",
-                //         title: "Item Type"
-                //     },
-                //     {
-                //         name: "Status",
-                //         title: "Status"
-                //     }
-                // ]
+                
             }
         });
     }
 
-    // Edit form properties for Step 3
-    public editProps(props: Components.IListFormEditProps) {
-        props.excludeFields = [
-            "Title"
-        ]
-        return props;
-    }
+//     // Edit form properties for Step 3
+//     editProps(props: Components.IListFormEditProps) {
+//         props.excludeFields = [
+//             "Title"
+//         ]
+//         return props;
+//     }
+// }
+
+editProps(props: Components.IListFormEditProps): Components.IListFormEditProps {
+    props.excludeFields = [
+        "Title",
+        "LinkTitle"
+    ]
+    return props;
 }
 
+}
