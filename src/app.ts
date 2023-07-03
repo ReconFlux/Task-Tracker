@@ -1,4 +1,4 @@
-import { Dashboard, ItemForm } from "dattatable";
+import { Dashboard, ItemForm, Documents } from "dattatable";
 import { Components } from "gd-sprest-bs";
 import * as jQuery from "jquery";
 import { DataSource, IItem } from "./ds";
@@ -6,6 +6,7 @@ import Strings from "./strings";
 import { folderFill } from "gd-sprest-bs/build/icons/svgs/folderFill";
 import { pencilSquare } from "gd-sprest-bs/build/icons/svgs/pencilSquare";
 import * as moment from "moment";
+import { DocModal } from "./Components/DocModal";
 
 /**
  * Main Application
@@ -184,7 +185,7 @@ export class App {
                                     type: Components.ButtonTypes.OutlineSecondary,
                                     isLarge: true,
                                     onClick: () => {
-                                        
+                                        new DocModal(el, item)
                                     }
                                 }
                             });
