@@ -27,6 +27,6 @@ const Strings = {
     ProjectDescription: "Created using the gd-sprest-bs library.",
     SourceUrl: ContextInfo.webServerRelativeUrl,
     DateTimeFormat: "YYYY-MM-DD  HH:mm",
-    Version: "0.1"
+    Version: "0.2"
 };
 export default Strings;

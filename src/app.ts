@@ -37,6 +37,7 @@ export class App {
                         onClick: () => {
                             // Show the new form
                             DataSource.List.newForm({
+                                onCreateEditForm: props => {props.excludeFields = ["Title", "LinkTitle", "AssignedTo"]; return props},
                                 onUpdate: () => {
                                     // Refresh the data
                                     DataSource.refresh().then(() => {
@@ -125,7 +126,9 @@ export class App {
                                             onSetHeader(el) {
                                                 el.innerHTML = "Update Task";
                                             },
-                                            onCreateEditForm: props => { return this.editProps(props); },
+                                            onCreateEditForm: props => { props.excludeFields = [
+                                                "Title"
+                                            ]; return props },
                                             itemId: item.Id,
                                             onUpdate: () => {
                                                 // Refresh the data
@@ -181,7 +184,7 @@ export class App {
                                     type: Components.ButtonTypes.OutlineSecondary,
                                     isLarge: true,
                                     onClick: () => {
-                                        //new DocModal(el, item);
+                                        
                                     }
                                 }
                             });
@@ -202,7 +205,7 @@ export class App {
 //     }
 // }
 
-editProps(props: Components.IListFormEditProps): Components.IListFormEditProps {
+editProps(props: Components.IListFormEditProps) {
     props.excludeFields = [
         "Title",
         "LinkTitle"
