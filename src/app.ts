@@ -5,6 +5,7 @@ import { DataSource, IItem } from "./ds";
 import Strings from "./strings";
 import { folderFill } from "gd-sprest-bs/build/icons/svgs/folderFill";
 import { pencilSquare } from "gd-sprest-bs/build/icons/svgs/pencilSquare";
+import { plusSquare } from "gd-sprest-bs/build/icons/svgs/plusSquare";
 import * as moment from "moment";
 import { DocModal } from "./Components/DocModal";
 
@@ -32,12 +33,16 @@ export class App {
                 title: Strings.ProjectName,
                 items: [
                     {
-                        className: "btn-outline-light",
+                        className: "btn-outline-light btn-sm",
                         text: "Create Item",
+                        iconType: plusSquare,
+                        iconSize: 18,
+                        iconClassName: "me-2 mb-1",
                         isButton: true,
                         onClick: () => {
                             // Show the new form
                             DataSource.List.newForm({
+                                // Removes the Title field from the
                                 onCreateEditForm: props => {props.excludeFields = ["Title", "LinkTitle", "AssignedTo"]; return props},
                                 onUpdate: () => {
                                     // Refresh the data
@@ -49,7 +54,10 @@ export class App {
                             });
                         }
                     }
-                ]
+                ],
+                onRendering: props => {
+                    props.className = "navbar navbar-dark bg-dark rounded-top"
+                }
             },
             filters: {
                 items: [
@@ -97,6 +105,7 @@ export class App {
                         jQuery(api.context[0].nTable).removeClass('no-footer');
                         jQuery(api.context[0].nTable).addClass('tbl-footer');
                         jQuery(api.context[0].nTable).addClass('table-striped');
+                        jQuery(api.context[0].nTable).addClass('border border-dark border-1');
                         jQuery(api.context[0].nTableWrapper).find('.dataTables_info').addClass('text-center');
                         jQuery(api.context[0].nTableWrapper).find('.dataTables_length').addClass('pt-2');
                         jQuery(api.context[0].nTableWrapper).find('.dataTables_paginate').addClass('pt-03');
@@ -125,8 +134,10 @@ export class App {
                                         // Show the edit form
                                         ItemForm.edit({
                                             onSetHeader(el) {
+                                                // Set the Header
                                                 el.innerHTML = "Update Task";
                                             },
+                                            // Removes the Title field (we're not using it)
                                             onCreateEditForm: props => { props.excludeFields = [
                                                 "Title"
                                             ]; return props },
@@ -157,7 +168,7 @@ export class App {
                         name: "",
                         title: "Requester",
                         onRenderCell: (el, column, item: IItem) => {
-                            // Grabs the users Title
+                            // Grabs the users name
                             el.innerHTML = item ? item.Requester.Title : "";
                         }
                     },
@@ -165,7 +176,7 @@ export class App {
                         name: "",
                         title: "Lasst Modified",
                         onRenderCell: (el, column, item: IItem) => {
-                            // Grabs the users Title
+                            // Grabs the OOB Last Mod Date
                             let mod = item ? item.Modified : "";
                             el.innerHTML =  moment(mod).format(Strings.DateTimeFormat);
                         }
@@ -185,6 +196,7 @@ export class App {
                                     type: Components.ButtonTypes.OutlineSecondary,
                                     isLarge: true,
                                     onClick: () => {
+                                        // Creates the Document Modal for each item
                                         new DocModal(el, item)
                                     }
                                 }
@@ -196,22 +208,4 @@ export class App {
             }
         });
     }
-
-//     // Edit form properties for Step 3
-//     editProps(props: Components.IListFormEditProps) {
-//         props.excludeFields = [
-//             "Title"
-//         ]
-//         return props;
-//     }
-// }
-
-editProps(props: Components.IListFormEditProps) {
-    props.excludeFields = [
-        "Title",
-        "LinkTitle"
-    ]
-    return props;
-}
-
 }
