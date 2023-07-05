@@ -57,6 +57,18 @@ export class App {
                 ],
                 onRendering: props => {
                     props.className = "navbar navbar-dark bg-dark rounded-top"
+                },
+                onRendered: () => {
+                    // Update classes for the navBar container
+                    let navEl = el.firstChild as HTMLElement;
+                    navEl.classList.remove("bg-primary");
+                    navEl.classList.remove("rounded");
+                    navEl.classList.remove("rounded-bottom");
+                    navEl.classList.add("rounded-top");
+                    navEl.classList.add("border");
+                    navEl.classList.add("border-dark");
+                    navEl.classList.add("border-2");
+                    navEl.id = "DashboardNav";
                 }
             },
             filters: {
@@ -105,7 +117,6 @@ export class App {
                         jQuery(api.context[0].nTable).removeClass('no-footer');
                         jQuery(api.context[0].nTable).addClass('tbl-footer');
                         jQuery(api.context[0].nTable).addClass('table-striped');
-                        jQuery(api.context[0].nTable).addClass('border border-dark border-1');
                         jQuery(api.context[0].nTableWrapper).find('.dataTables_info').addClass('text-center');
                         jQuery(api.context[0].nTableWrapper).find('.dataTables_length').addClass('pt-2');
                         jQuery(api.context[0].nTableWrapper).find('.dataTables_paginate').addClass('pt-03');
@@ -205,7 +216,7 @@ export class App {
                     }
                 ],
                 onRendered: props => {
-                    props.className = "TETS";
+                    props.className = "px-4";
                 }
             }
         });
