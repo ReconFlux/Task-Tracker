@@ -8,6 +8,7 @@ import { pencilSquare } from "gd-sprest-bs/build/icons/svgs/pencilSquare";
 import { plusSquare } from "gd-sprest-bs/build/icons/svgs/plusSquare";
 import * as moment from "moment";
 import { DocModal } from "./Components/DocModal";
+import { SupportModal } from "./Components/HelpModal";
 
 /**
  * Main Application
@@ -19,9 +20,7 @@ export class App {
         this.render(el);
         // Set the list for Item Form
         ItemForm.ListName = Strings.Lists.Main;
-    }
-
-    
+    } 
     // Renders the dashboard
     private render(el: HTMLElement) {
         // Create the dashboard
@@ -55,6 +54,15 @@ export class App {
                         }
                     }
                 ],
+                itemsEnd: [
+                    {
+                        text: "Help",
+                        isButton: true,
+                        onClick: () => {
+                            new SupportModal(el)
+                        }
+                    }
+                ],
                 onRendering: props => {
                     props.className = "navbar navbar-dark bg-dark rounded-top"
                 },
@@ -70,6 +78,14 @@ export class App {
                     navEl.classList.add("border-2");
                     navEl.id = "DashboardNav";
                 }
+            },
+            subNavigation: {
+                title: Strings.subNavigationTitle,
+                items: [
+                    {
+                        text: "New Request"
+                    }
+                ]
             },
             filters: {
                 items: [

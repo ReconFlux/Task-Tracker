@@ -23,8 +23,9 @@ const Strings = {
         set1: "Templates",
         set2: "How-Tos"
     },
-    ProjectName: "Task Tracking Dashboard",
-    ProjectDescription: "Created using the gd-sprest-bs library.",
+    ProjectName: "307th MSG Commanders Support Staff",
+    subNavigationTitle: "Tracking System Dashboard",
+    ProjectDescription: "CSS Issue Tracking tool created for the 307th MSG.",
     SourceUrl: ContextInfo.webServerRelativeUrl,
     DateTimeFormat: "YYYY-MM-DD  HH:mm",
     Version: "0.2"
