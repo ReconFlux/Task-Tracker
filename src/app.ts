@@ -203,8 +203,10 @@ export class App {
                             });
                         }
                     }
-                ]
-                
+                ],
+                onRendered: props => {
+                    props.className = "TETS";
+                }
             }
         });
     }
