@@ -213,15 +213,16 @@ export class App {
                                 btnProps: {
                                     // Render the button
                                     iconType: pencilSquare,
-                                    iconSize: 18,
-                                    isLarge: true,
+                                    iconSize: 33,
+                                    isSmall: true,
                                     type: Components.ButtonTypes.OutlineSecondary,
+                                    id: "btn_edit",
                                     onClick: () => {
                                         // Show the edit form
                                         ItemForm.edit({
                                             onSetHeader(el) {
                                                 // Set the Header
-                                                el.innerHTML = "Update Task";
+                                                el.innerHTML = "Update" + " " + `${item.Requester.Title}` + "'s" + " " + "Request";
                                             },
                                             // Removes the Title field (we're not using it)
                                             onCreateEditForm: props => { props.excludeFields = [
@@ -278,9 +279,9 @@ export class App {
                                 content: "Upload Documents",
                                 btnProps: {
                                     iconType: folderFill,
-                                    iconSize: 28,
+                                    iconSize: 48,
                                     type: Components.ButtonTypes.OutlineSecondary,
-                                    isLarge: true,
+                                    isSmall: true,
                                     onClick: () => {
                                         // Creates the Document Modal for each item
                                         new DocModal(el, item)
@@ -297,7 +298,12 @@ export class App {
         });
 
         let btn_props = document.getElementById("new_btn");
-         btn_props.classList.remove("btn-icon");
+        btn_props.classList.remove("btn-icon");
+
+        // let btn_editprops = document.querySelectorAll("[id='btn_edit']");
+        // for(var i = 0; i < btn_editprops.length; i++) 
+        // btn_editprops[i].classList.remove('btn-icon');
+        
     }
 
     
