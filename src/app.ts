@@ -9,7 +9,7 @@ import { plusSquare } from "gd-sprest-bs/build/icons/svgs/plusSquare";
 import { questionSquare } from "gd-sprest-bs/build/icons/svgs/questionSquare";
 import * as moment from "moment";
 import { DocModal } from "./Components/DocModal";
-import { SupportModal } from "./Components/HelpModal";
+import { SupportModal } from "./Components/SupportModal/main";
 
 /**
  * Main Application
@@ -51,7 +51,9 @@ export class App {
                                     iconClassName: "me-2 mb-1",
                                     type: Components.ButtonTypes.OutlineLight,
                                     onClick: () => {
+                                        let _elModal = document.createElement("div");
                                         // Help Modal Here
+                                        new SupportModal(_elModal);
                                     }                                    
                                 },
                                 type: Components.TooltipTypes.Secondary
