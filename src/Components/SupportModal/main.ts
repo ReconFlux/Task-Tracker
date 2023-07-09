@@ -27,15 +27,31 @@ export class SupportModal {
 
 
         let elBody = document.createElement('div');
-
+        let elAccordian = document.createElement('div');
     
 
         elBody.innerHTML = 
         `
         
-        <div class="container-fluid">
+        <div class="container-fluid p-3 m-0">
             <div class="row">
-                <div class="border col-7 text-center">TEST</div>
+
+
+                <div class="border col-7 text-center">
+
+               ${Components.Accordion({
+                   el: elAccordian,
+                   items: [
+                       {
+                           header: "test"
+                       }
+                   ]
+               })}
+                
+                
+                </div>
+
+
                 <div class="border col-5 text-center">
                     <div class="col bg-secondary bg-opacity-10 text-center">TEST</div>
                         <table class="table">
@@ -45,25 +61,26 @@ export class SupportModal {
                                         <td>Mark</td>
                                         <td>Otto</td>
                                         <td>@mdo</td>
-                   </tr>
-                   <tr>
-                     <th scope="row">2</th>
-                     <td>Jacob</td>
-                     <td>Thornton</td>
-                     <td>@fat</td>
-                   </tr>
-                   <tr>
-                     <th scope="row">3</th>
-                     <td colspan="2">Larry the Bird</td>
-                     <td>@twitter</td>
-                   </tr>
-                 </tbody>
-               </table>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td colspan="2">Larry the Bird</td>
+                                    <td>@twitter</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
         
-        `
+        `;
+
 
        
 
