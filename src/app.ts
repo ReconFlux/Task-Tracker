@@ -31,33 +31,38 @@ export class App {
             navigation: {
                 title: Strings.ProjectName,
                 items: [
-                    {
-                        className: "btn-outline-light btn-sm",
-                        text: "Create Item",
-                        iconType: plusSquare,
-                        iconSize: 18,
-                        iconClassName: "me-2 mb-1",
-                        isButton: true,
-                        onClick: () => {
-                            // Show the new form
-                            DataSource.List.newForm({
-                                // Removes the Title field from the
-                                onCreateEditForm: props => {props.excludeFields = ["Title", "LinkTitle", "AssignedTo"]; return props},
-                                onUpdate: () => {
-                                    // Refresh the data
-                                    DataSource.refresh().then(() => {
-                                        // Refresh the table
-                                        dashboard.refresh(DataSource.ListItems);
-                                    });
-                                }
-                            });
-                        }
-                    }
+                    
                 ],
                 itemsEnd: [
                     {
                         text: "Help",
+                        className: "btn-outline-light btn-sm me-3",
                         isButton: true,
+                        iconType: plusSquare,
+                        iconSize: 18,
+                        iconClassName: "me-2 mb-1",
+                        onClick: () => {
+                            new SupportModal(el)
+                        }
+                    },
+                    {
+                        text: "Templates",
+                        className: "btn-outline-light btn-sm me-3",
+                        isButton: true,
+                        iconType: plusSquare,
+                        iconSize: 18,
+                        iconClassName: "me-2 mb-1",
+                        onClick: () => {
+                            new SupportModal(el)
+                        }
+                    },
+                    {
+                        text: "How To's",
+                        className: "btn-outline-light btn-sm me-3",
+                        isButton: true,
+                        iconType: plusSquare,
+                        iconSize: 18,
+                        iconClassName: "me-2 mb-1",
                         onClick: () => {
                             new SupportModal(el)
                         }
@@ -83,7 +88,61 @@ export class App {
                 title: Strings.subNavigationTitle,
                 items: [
                     {
-                        text: "New Request"
+                        onRender: (el) => {
+                            // render tooltip
+                            Components.Tooltip({
+                                el,
+                                content: "Submit a request",
+                                btnProps: {
+                                    id: "new_btn",
+                                    className: "mb-3",
+                                    text: "New Request",
+                                    iconType: plusSquare,
+                                    iconSize: 18,
+                                    iconClassName: "me-2 mb-1",
+                                    type: Components.ButtonTypes.OutlineDark,
+                                    onClick: () => {
+                                        // Show the new form
+                                        DataSource.List.newForm({
+                                            // Removes the Title field from the
+                                            onCreateEditForm: props => {
+                                                props.excludeFields = ["Title", "LinkTitle", "AssignedTo"];
+                                                
+                                                return props
+                                            },
+                                            onSetHeader: props => {props.innerHTML = "Submit a request"; return props},
+                                            onSetFooter: (elFooter)  => {
+                                                // Create a new button
+                                                Components.Button({
+                                                    el: elFooter,
+                                                    text: "Submit",
+                                                    className: "",
+                                                    isSmall: true,
+                                                    type: Components.ButtonTypes.OutlinePrimary,
+                                                    onClick: () => {
+                                                        // Saves the item
+                                                        ItemForm.save();
+                                                    }
+                                                });
+                                                // Removes the old button
+                                               let old = elFooter.firstChild as HTMLElement;
+                                               old.style.display = "none";
+                                                
+                                            },
+                                            onUpdate: () => {
+                                                // Refresh the data
+                                                DataSource.refresh().then(() => {
+                                                    // Refresh the table
+                                                    dashboard.refresh(DataSource.ListItems);
+                                                });
+                                            },
+                                        });
+                                    }
+                                },
+                                type: Components.TooltipTypes.Secondary
+                            });                         
+                        },
+                        
                     }
                 ]
             },
@@ -236,5 +295,10 @@ export class App {
                 }
             }
         });
+
+        let btn_props = document.getElementById("new_btn");
+         btn_props.classList.remove("btn-icon");
     }
+
+    
 }
