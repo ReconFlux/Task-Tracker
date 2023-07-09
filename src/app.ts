@@ -6,6 +6,7 @@ import Strings from "./strings";
 import { folderFill } from "gd-sprest-bs/build/icons/svgs/folderFill";
 import { pencilSquare } from "gd-sprest-bs/build/icons/svgs/pencilSquare";
 import { plusSquare } from "gd-sprest-bs/build/icons/svgs/plusSquare";
+import { questionSquare } from "gd-sprest-bs/build/icons/svgs/questionSquare";
 import * as moment from "moment";
 import { DocModal } from "./Components/DocModal";
 import { SupportModal } from "./Components/HelpModal";
@@ -32,40 +33,29 @@ export class App {
                 title: `307<sup>th</sup> MSG Commanders Support Staff
                 `,
                 items: [
-                    
                 ],
                 itemsEnd: [
                     {
-                        text: "Help",
-                        className: "btn-outline-light btn-sm me-3",
-                        isButton: true,
-                        iconType: plusSquare,
-                        iconSize: 18,
-                        iconClassName: "me-2 mb-1",
-                        onClick: () => {
-                            new SupportModal(el)
-                        }
-                    },
-                    {
-                        text: "Templates",
-                        className: "btn-outline-light btn-sm me-3",
-                        isButton: true,
-                        iconType: plusSquare,
-                        iconSize: 18,
-                        iconClassName: "me-2 mb-1",
-                        onClick: () => {
-                            new SupportModal(el)
-                        }
-                    },
-                    {
-                        text: "How To's",
-                        className: "btn-outline-light btn-sm me-3",
-                        isButton: true,
-                        iconType: plusSquare,
-                        iconSize: 18,
-                        iconClassName: "me-2 mb-1",
-                        onClick: () => {
-                            new SupportModal(el)
+                        onRender: (el) => {
+                            // Render the Tooltip Component
+                            Components.Tooltip({
+                                el,
+                                content: "Click here for help",
+                                btnProps: {
+                                    text: "Help",
+                                    id: "btn_help",
+                                    className: "mb-3 me-3",
+                                    iconType: questionSquare,
+                                    iconSize: 18,
+                                    isSmall: true,
+                                    iconClassName: "me-2 mb-1",
+                                    type: Components.ButtonTypes.OutlineLight,
+                                    onClick: () => {
+                                        // Help Modal Here
+                                    }                                    
+                                },
+                                type: Components.TooltipTypes.Secondary
+                            });
                         }
                     }
                 ],
@@ -214,7 +204,7 @@ export class App {
                                 btnProps: {
                                     // Render the button
                                     iconType: pencilSquare,
-                                    iconSize: 33,
+                                    iconSize: 24,
                                     isSmall: true,
                                     type: Components.ButtonTypes.OutlineSecondary,
                                     id: "btn_edit",
@@ -280,7 +270,7 @@ export class App {
                                 content: "Upload Documents",
                                 btnProps: {
                                     iconType: folderFill,
-                                    iconSize: 48,
+                                    iconSize: 28,
                                     type: Components.ButtonTypes.OutlineSecondary,
                                     isSmall: true,
                                     onClick: () => {
@@ -298,8 +288,12 @@ export class App {
             }
         });
 
+        // clean the New button props
         let btn_props = document.getElementById("new_btn");
         btn_props.classList.remove("btn-icon");
+
+        let btn_help_props = document.getElementById("btn_help");
+        btn_help_props.classList.remove("btn-icon");
 
         // let btn_editprops = document.querySelectorAll("[id='btn_edit']");
         // for(var i = 0; i < btn_editprops.length; i++) 
