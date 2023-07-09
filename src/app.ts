@@ -29,7 +29,8 @@ export class App {
             hideHeader: true,
             useModal: true,
             navigation: {
-                title: Strings.ProjectName,
+                title: `307<sup>th</sup> MSG Commanders Support Staff
+                `,
                 items: [
                     
                 ],
