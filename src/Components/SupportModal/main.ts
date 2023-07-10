@@ -28,72 +28,19 @@ export class SupportModal {
 
         let elBody = document.createElement('div');
         let elAccordian = document.createElement('div');
+        let elSideBar = document.createElement('div');
     
-
-        elBody.innerHTML = 
-        `
-        
-        <div class="container-fluid p-3 m-0">
-            <div class="row">
-
-
-                <div class="border col-7 text-center">
-
-               ${Components.Accordion({
-                   el: elAccordian,
-                   items: [
-                       {
-                           header: "test"
-                       }
-                   ]
-               })}
-                
-                
-                </div>
-
-
-                <div class="border col-5 text-center">
-                    <div class="col bg-secondary bg-opacity-10 text-center">TEST</div>
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        
-        `;
-
-
-       
-
-
-
-
-
         // Modal Header
         Modal.setHeader(el)
 
         // Set the body
         Modal.setBody(elBody);
-        
+        elBody.appendChild(elAccordian);
+        elBody.appendChild(elSideBar);
+        // body props
+        elBody.className = "container-fluid row";
+        elAccordian.className = "col-8";
+        elSideBar.className = "col-4";
 
         // Modal Props
         Modal.setScrollable(true);
@@ -101,6 +48,67 @@ export class SupportModal {
 
         // Show
         Modal.show();
+
+       
+
+
+        // MAIN PANEL
+        Components.Accordion({
+            el: elAccordian,
+            items: [
+                {
+                    header: "TEST",
+                    content: "TEST TEST TEST",
+                    showFl: true,
+                    className: "Accord1",
+                },
+                {
+                    header: "TEST",
+                    showFl: true,
+                    content: "TEST TEST TEST",
+                    className: "Accord2"
+                }
+            ]
+        });
+
+
+        // SIDE BAR PANEL
+        Components.Card({
+            el: elSideBar,
+            body: [
+                {
+                    title: "Contact List",
+                    subTitle: "List of available POC's",
+                    onRender: (el) => {
+                        Components.Table({
+                            el: el,
+                            className: "table-sm is-striped",
+                            columns: [
+                                { name: "a0", title: "Actions", isHidden: true },
+                                { name: "a1", title: "Col 1" },
+                                { name: "a2", title: "Col 2" },
+                                { name: "a3", title: "Col 3" }
+                            ],
+                            rows: [
+                                { a0: "1", a1: "1.1", a2: "1.2", a3: "1.3" },
+                                { a0: "2", a1: "2.1", a2: "2.2", a3: "2.3" },
+                                { a0: "3", a1: "3.1", a2: "3.2", a3: "3.3" },
+                                { a0: "4", a1: "4.1", a2: "4.2", a3: "4.3" },
+                                { a0: "5", a1: "5.1", a2: "5.2", a3: "5.3" },
+                                { a0: "6", a1: "6.1", a2: "6.2", a3: "6.3" },
+                                { a0: "7", a1: "7.1", a2: "7.2", a3: "7.3" },
+                                { a0: "8", a1: "8.1", a2: "8.2", a3: "8.3" },
+                                { a0: "9", a1: "9.1", a2: "9.2", a3: "9.3" }
+                            ]
+                        });
+                    }
+                }
+            ]
+
+
+        });
+
+        
 
     }
 
