@@ -33,11 +33,18 @@ export class SupportModal {
         let elTemplates = document.createElement('div');
         let elHowTos = document.createElement('div');
         let elHeader = document.createElement('div');
-        let elHeaderIcon = questionSquare(28);       
+        let elHeaderIcon = questionSquare(28) as SVGElement;       
     
         // Modal Header
-        elHeader.appendChild(elHeaderIcon);
-        elHeader.innerHTML = "Support Documents";
+        Components.Button({
+            el:elHeader,
+            iconType: questionSquare,
+            iconSize: 28,
+            iconClassName: "me-3",
+            text: "Supporting Documents",
+            className: "disabled border-0",
+            type: Components.ButtonTypes.OutlineDark
+        })
         Modal.setHeader(elHeader);
 
         // Set the body
