@@ -1,7 +1,7 @@
 import { Modal, Documents } from "dattatable";
 import { Components } from "gd-sprest-bs";
 import Strings from "../../strings";
-import strings from "../../strings";
+import { questionSquare } from "gd-sprest-bs/build/icons/svgs";
 
 
 /**
@@ -32,9 +32,13 @@ export class SupportModal {
         let elSideBar = document.createElement('div');
         let elTemplates = document.createElement('div');
         let elHowTos = document.createElement('div');
+        let elHeader = document.createElement('div');
+        let elHeaderIcon = questionSquare(28);       
     
         // Modal Header
-        Modal.setHeader(el)
+        elHeader.appendChild(elHeaderIcon);
+        elHeader.innerHTML = "Support Documents";
+        Modal.setHeader(elHeader);
 
         // Set the body
         Modal.setBody(elBody);
@@ -117,8 +121,8 @@ export class SupportModal {
                                         });
                                     },
                                     onRenderTitle: el => {
-                                        el.innerHTML = "CSS Point of contacts"
-                                        el.className = "text-center text-bg-dark"
+                                        el.innerHTML = "CSS Point of contacts";
+                                        el.className = "text-center text-bg-dark";
                                     }
                                 }
                                 

@@ -40,9 +40,9 @@ export class App {
                             // Render the Tooltip Component
                             Components.Tooltip({
                                 el,
-                                content: "Click here for help",
+                                content: "Click here to access supporting documentation",
                                 btnProps: {
-                                    text: "Help",
+                                    text: "Suport Documents",
                                     id: "btn_help",
                                     className: "mb-3 me-3",
                                     iconType: questionSquare,
